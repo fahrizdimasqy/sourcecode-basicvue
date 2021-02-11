@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+</head>
+<!-- <style>
+    form {
+        border: 1px solid #ddd;
+        padding: 5px;
+        width: 225px;
+        background: #efefef;
+    }
+
+    label {
+        display: block;
+        margin-top: 5px;
+    }
+
+    input,
+    textarea,
+    select,
+    option {
+        min-width: 100px;
+    }
+</style> -->
+
+<body>
+    <!-- global component -->
+    <div id="app1">
+        <hello-world></hello-world>
+        <component-a></component-a>
+        <component-b></component-b>
+        <component-c></component-c>
+    </div>
+
+    <div id="app2">
+        <component-a></component-a>
+    </div>
+    <!-- akhir global component -->
+
+    <!-- local component -->
+    <div id="app3">
+        <component-local-a> </component-local-a>
+        <component-local-b></component-local-b>
+        <component-local-c></component-local-c>
+    </div>
+
+    <div id="app4">
+        <component-local-a> </component-local-a>
+        <component-local-b></component-local-b>
+        <component-local-c></component-local-c>
+    </div>
+    <!-- akhir local component -->
+
+
+    <script type="text/javascript">
+        // Vue.component('hello-world', {
+        //     data() {
+        //         return {
+        //             message: 'hello world'
+        //         }
+        //     },
+        //     template: '<h1>{{message}}</h1>'
+        // })
+
+        // definisi global component
+        // component a
+        Vue.component('component-a', {
+            template: '<p>Komponen a</p>'
+        })
+
+        // component b
+        Vue.component('component-b', {
+            template: '<p>komponen b </p>'
+        })
+
+        // component c
+        Vue.component('component-c', {
+            template: '<p>komponen c</p>'
+        })
+        // akhir definisi global component
+
+        // definisi local component
+        var ComponentLocalA = {
+            template: '<p>Component local A</p>'
+        }
+
+        var ComponentLocalB = {
+            template: '<p>Component local B</p>'
+        }
+
+        var ComponentLocalC = {
+            template: '<p>Component local C</p>'
+        }
+        // akhir definisi local component
+
+        new Vue({
+            el: '#app1'
+        })
+
+        new Vue({
+            el: '#app2'
+        })
+
+
+        // local component register
+        new Vue({
+            el: '#app3',
+            components: {
+                'component-local-a': ComponentLocalA,
+                'component-local-b': ComponentLocalB,
+                'component-local-c': ComponentLocalC
+            },
+        })
+        new Vue({
+            el: '#app4'
+        })
+
+        // setTimeout(() => {
+        //     vm.imageSrc = 'IMG-20200404-WA0006-removebg-preview.png'
+        // }, 3000)
+    </script>
+</body>
+
+</html>

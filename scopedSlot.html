@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+</head>
+<!-- <style>
+    form {
+        border: 1px solid #ddd;
+        padding: 5px;
+        width: 225px;
+        background: #efefef;
+    }
+
+    label {
+        display: block;
+        margin-top: 5px;
+    }
+
+    input,
+    textarea,
+    select,
+    option {
+        min-width: 100px;
+    }
+</style> -->
+
+<body>
+    <!-- global component -->
+    <div id="app">
+        <h1>Selected: {{ selectedBook }}</h1>
+        <book v-for="book in books" :key="book.id" :book="book" @selected="selectedBook = $event"></book>
+        <div>
+            <slot :defaultJudul="defaultAlert">{{ defaultAlert }}</strong>
+        </div>
+    </div>
+    <!-- akhir local component -->
+
+
+    <script type="text/javascript">
+        Vue.component('alert', {
+            data() {
+                return {
+                    defaultAlert: 'Awas Bahaya',
+                }
+            },
+            template: `
+                    <div>
+                        <slot>{{ defaultAlert }}</strong>
+                    </div>
+                    `
+        })
+    </script>
+</body>
+
+</html>

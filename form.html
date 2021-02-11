@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+</head>
+<!-- <style>
+    form {
+        border: 1px solid #ddd;
+        padding: 5px;
+        width: 225px;
+        background: #efefef;
+    }
+
+    label {
+        display: block;
+        margin-top: 5px;
+    }
+
+    input,
+    textarea,
+    select,
+    option {
+        min-width: 100px;
+    }
+</style> -->
+
+<body>
+    <div id="app">
+        <div class="container mt-5">
+            <form @submit="submitForm($event)" action="http://example.com/add-
+            product" method="POST">
+                <input type="text" name="title" id="" :value="title" @input="title=$event.target.value">
+                <p>{{title}}</p>
+            </form>
+            <!-- menggunakan v model -->
+            <h4>Menggunakan v-model</h4>
+            <form @submit.prevent="submitForm($event)" action="http://example.com/add-
+            product" method="POST">
+                <div class="form-group">
+                    <input type="text" name="title" v-model="title" placeholder="Masukan judul" id="">
+                    </br>
+                    <p> {{title}}</p>
+                </div>
+                <textarea name="description" v-model="description" placeholder="masukkan deskripsi"></textarea>
+                </br>
+                <p> {{ description }}</p>
+                <input type="number" name="price" v-model.number="price">
+                <br><br>
+                <p> {{ price }}</p>
+                <input type="text" name="subtitle" v-model.trim="subtitle" placeholder="masukkan judul">
+                <br><br>
+                <p> "{{subtitle}}"</p>
+                Paket <br>
+                <input type="radio" name="bukuA" value="A" v-model="paket">
+                <label for="bukuA">Buku Laravel</label>
+                <br>
+                <input type="radio" name="bukuB" value="B" v-model="paket">
+                <label for="bukuB">Buku Vue</label>
+                <br>
+                <input type="radio" name="bukuAB" value="AB" v-model="paket">
+                <label for="bukuAB">Buku Laravel + Vue</label>
+                <br>
+                <p>Pilihan paket: {{ paket }}</p>
+                <select name="category" v-model="category">
+                    <option disabled value="">Please select one</option>
+                    <option>Graphics Programming</option>
+                    <option>Mobile Application Development</option>
+                    <option>Virtual and Augmented Reality</option>
+                </select>
+                <p>Selected: {{category}}</p>
+                <select name="gender" v-model="gender">
+                    <option disabled value="">Please select one</option>
+                    <option value="false">Wanita</option>
+                    <option value="true">Pria</option>
+                </select>
+                <p>Selected: {{gender}}</p>
+                Gender:
+                <input type="checkbox" name="checkbox" id="" v-model="gender">
+                <label for="checkbox"></label>
+                <p>{{gender}}</p>
+                </br>
+                <input type="checkbox" name="hobby1" value="nonton" id="" v-model="hobbies">
+                <label for="hobby1">Nonton</label>
+                <input type="checkbox" name="hobby2" value="jalan" id="" v-model="hobbies">
+                <label for="hobby2">Jalan</label>
+                <input type="checkbox" name="hobby3" value="makan" v-model="hobbies">
+                <label for="hobby3">Makan</label>
+                <br>
+                <span>Pilihan hobi: {{ hobbies }}</span>
+                <hr>
+                <!-- <select v-model="categories" multiple>
+                    <option value="01">Graphics Programming</option>
+                    <option value="02">Mobile Application Development</option>
+                    <option value="03">Virtual and Augmented Reality</option>
+                </select>
+                <p>Selected: {{ categories }}</p> -->
+                <select v-model="categories" v-model="categories" multiple>
+                    <option v-for="option in options" :value="option.value">{{option.text}}</option>
+                </select>
+                <p>Selected: {{ categories }}</p>
+                <h3>Filtering Data List</h3>
+                <hr>
+                <input type="text" name="" id="" v-model="keyword" placeholder="Masukan kata kunci">
+                <ul>
+                    <li v-for="(book, index) of filterBooks" :key="index">
+                        <p>{{book}}</p>
+                    </li>
+                </ul>
+                <input type="submit" name="" id="" value="submit">
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                keyword: '',
+                books: [
+                    'C++',
+                    'Mastering Laravel',
+                    'Flutter'
+                ],
+                title: "",
+                description: "",
+                price: "",
+                subtitle: "",
+                paket: '',
+                category: '',
+                gender: true,
+                hobbies: [],
+                categories: [],
+                options: [{
+                        text: 'Graphic Programming',
+                        value: '01'
+                    },
+                    {
+                        text: 'Mobile Application Development',
+                        value: '02'
+                    },
+                    {
+                        text: 'Virtual and Augmented Reality',
+                        value: '03'
+                    }
+                ]
+            },
+            computed: {
+                filterBooks() {
+                    return this.books.filter((book) => {
+                        return book.includes(this.keyword)
+                    })
+                }
+            },
+            methods: {
+                submitForm(event) {
+                    let error = 0;
+                    if (this.title.length < 3) {
+                        error++;
+                        alert('Judul minimal 3 karakter !')
+                    } else if (this.description.length >= 500) {
+                        error++
+                        alert('Description maximal 500 karakter!')
+                    } else if (this.author.length < 3) {
+                        error++
+                        alert('Author minimal 3 karakter!')
+                    } else if (this.price < 0) {
+                        error++
+                        alert('Price tidak boleh minus!')
+                    } else if (this.categories.length === 0) {
+                        error++
+                        alert('Pilih minimal 1 category!')
+                    }
+                    if (error === 0) {
+                        alert('Terimakasih sudah mengisi form dengan benar:)')
+                    }
+                    console.log(event)
+                    alert('Terimakasih')
+                    event.preventDefault()
+                }
+            },
+        })
+        // setTimeout(() => {
+        //     vm.imageSrc = 'IMG-20200404-WA0006-removebg-preview.png'
+        // }, 3000)
+    </script>
+</body>
+
+</html>

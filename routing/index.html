@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../lib/vue.js"></script>
+    <script src="../lib/vue-router.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .5s;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        opacity: 0;
+    }
+</style>
+
+<body>
+
+    <div id="app">
+        <p>
+            <router-link to="/">Home</router-link>
+            <router-link to="/about">About</router-link>
+            <router-link to="/books">Books</router-link>
+        </p>
+        <transition name="fade" mode="out-in">
+            <router-view></router-view>
+        </transition>
+    </div>
+
+    <script type="module">
+        import { BookComponent } from './BookComponent.js'
+        import { BooksComponent } from './BooksComponent.js'
+        const Home = {
+            template: '<div>Halaman Home</div>'
+        }
+        const About = {
+            template: '<div>Halaman About</div>'
+        }
+        // mapping route path dengan componentnya, dibaca dari atas ke bawah
+        const routes = [{
+                path: '/',
+                component: Home,
+                alias: '/home'
+            },
+            {
+                path: '/about',
+                component: About,
+                meta:{login:true}
+            },
+            {
+                path: '/books',
+                component: BooksComponent
+            },
+            { 
+                path: '/book/:id',
+                 name: 'book', 
+                 component: BookComponent, 
+                 props:true },
+            {
+                path: '*',
+                redirect: '/'
+            },
+        ]
+        // register routing aplikasi kita pada objek dari class VueRouter
+        const router = new VueRouter({
+            routes, // bentuk pendek dari `routes: routes`
+            
+        })
+        router.beforeEach((to, from, next) => {
+        if (to.matched.some(record => record.meta.login)) {
+        alert('Halaman ini hanya untuk user yang sudah login!')
+        next(false)
+        }
+        else{
+        next()
+        }
+        })
+        var vm = new Vue({
+            el: '#app',
+            router,
+        })
+    </script>
+
+</body>
+
+</html>

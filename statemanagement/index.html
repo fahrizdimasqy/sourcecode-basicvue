@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../lib/vue.js"></script>
+    <script src="../lib/vue-router.js"></script>
+    <script src="../lib/vuex.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .5s;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        opacity: 0;
+    }
+</style>
+
+<body>
+
+    <!-- <div id="app">
+    </div> -->
+    <div id="app">
+
+    </div>
+
+    <script>
+        // import {Hello} from "./Hello.js"
+        var store = new Vuex.Store({
+            strict: true,
+            state: {
+                books: [],
+                name: 'fahriz'
+            },
+            mutations: {
+                // increment(state) {
+                //     state.counter++;
+                // }
+                setName: (state, name) => {
+                    state.name = name;
+                },
+                setBooks(state, books) {
+                    state.books = books
+                }
+            },
+            getters: {
+                books: state => state.books,
+                name: state => state.name
+            },
+            actions: {
+                getBooks({
+                    commit
+                }) {
+                    return new Promise((resolve, reject) => {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", "https://api.jsonbin.io/b/6024042f435c323ba1c4604c");
+                        xhr.onload = function () {
+                            if (this.status >= 200 && this.status < 300) {
+                                commit('setBooks', JSON.parse(xhr.response))
+                                resolve(xhr.response);
+                            } else {
+                                reject({
+                                    status: this.status,
+                                    statusText: xhr.statusText
+                                });
+                            }
+                        };
+                        xhr.onerror = function () {
+                            reject({
+                                status: this.status,
+                                statusText: xhr.statusText
+                            });
+                        };
+                        xhr.send();
+                    })
+                }
+                // increment(context) {
+                //     context.commit('increment')
+                // }
+            },
+
+        })
+
+        new Vue({
+            el: '#app',
+            store,
+            components: {
+                // 'hello': Hello
+            },
+            // view
+            template: `<div id=""> 
+                <ul v-for="book in books">
+            <li>{{ book.title }}</li>
+           
+        </ul>
+        <input v-model='name'>
+                    </div>
+                
+                `,
+
+            // actions
+
+            // methods: {
+            //     increment() {
+            //         // store.commit('increment')
+            //         store.dispatch('increment')
+            //     }
+            // },
+            computed: {
+                books() {
+                    return store.getters.books
+                },
+                name: {
+                    get() {
+                        return store.getters.name
+                    },
+                    set(value) {
+                        store.commit('setName', value)
+                    }
+                }
+            },
+            created() {
+                store.dispatch('getBooks')
+                    .then((response) => {
+                        console.log('result:', response)
+                    })
+                    .catch((error) => {
+                        console.log('error: ', error)
+                    })
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>

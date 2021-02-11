@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<style type="text/css">
+    .title {
+        color: green;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <h1 v-once>{{ message }}</h1>
+        <h1 v-html="pesan"></h1>
+        <h1 v-bind:class="class_h1">{{message}}</h1>
+    </div>
+    <script type="text/javascript">
+        Vue.config.silent = true; //untuk menggunakan v-bind:class
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello world!',
+                pesan: "<span style='color:red'>Hello world </a>",
+                class_h1: "title"
+            },
+            // template: "<p>{{ message }}</p>"
+
+            // menggunakan fungsi render
+            // render(createElement) {
+            //     return createElement('h1', this.message)
+            // },
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <img v-bind:src=" 'images' + imageSrc" alt=""> -->
+        <img v-bind="{ id: imageID, src: imageSrc }" />
+        <a :href="test">Singkat</a>
+        <a v-on:[nama_event]="info('hallo')"> Test </a>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                imageID: 'image1',
+                imageSrc: 'unnamed.png',
+            },
+        })
+        // setTimeout(() => {
+        //     vm.imageSrc = 'IMG-20200404-WA0006-removebg-preview.png'
+        // }, 3000)
+    </script>
+</body>
+
+</html>
